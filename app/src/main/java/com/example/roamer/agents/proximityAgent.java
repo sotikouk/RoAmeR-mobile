@@ -16,21 +16,20 @@ private Context context;
     protected void setup() {
 
 
-    addBehaviour(new POIradar(this));
-    addBehaviour(new businessInfo(this));
+    addBehaviour(new cust2bDistance(this));
+    addBehaviour(new cust2bTimer(this));
 
     }
 
-    class POIradar extends CyclicBehaviour {
-
-        POIradar(Agent a){super(a);}
+    class cust2bDistance extends CyclicBehaviour {
+        cust2bDistance(Agent a){super(a);}
 //
     public void action(){}
     }
 
-    class businessInfo extends CyclicBehaviour {
+    class cust2bTimer extends CyclicBehaviour {
 
-        businessInfo(Agent a){super((a));}
+        cust2bTimer(Agent a){super((a));}
 
     public void action(){}
     }
