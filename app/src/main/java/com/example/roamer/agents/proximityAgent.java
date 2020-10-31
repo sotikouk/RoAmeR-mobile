@@ -29,7 +29,7 @@ private Context context;
 
     class cust2bTimer extends CyclicBehaviour {
 
-        cust2bTimer(Agent a){super((a));}
+        cust2bTimer(Agent a){super(a);}
 
     public void action(){}
     }
