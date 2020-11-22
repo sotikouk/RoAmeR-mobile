@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".startActivity">
+
+  <TextView
+      android:id="@+id/textView"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="Το όνομα σας :"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.1"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintVertical_bias="0.073" />
+
+  <EditText
+      android:id="@+id/PersonName"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="28dp"
+      android:ems="10"
+      android:inputType="textPersonName"
+      android:text="Name"
+      app:layout_constraintStart_toEndOf="@+id/textView"
+      tools:layout_editor_absoluteY="37dp" />
+
+  <TextView
+      android:id="@+id/editHost"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="52dp"
+      android:text="Host Name :"
+      app:layout_constraintTop_toBottomOf="@+id/textView"
+      tools:layout_editor_absoluteX="32dp" />
+
+  <EditText
+      android:id="@+id/hostName"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:ems="10"
+      android:inputType="textPersonName"
+      android:text="Name"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.467"
+      app:layout_constraintStart_toEndOf="@+id/editHost"
+      tools:layout_editor_absoluteY="109dp" />
+
+  <TextView
+      android:id="@+id/port"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="52dp"
+      android:text="Port :"
+      app:layout_constraintTop_toBottomOf="@+id/editHost"
+      tools:layout_editor_absoluteX="32dp" />
+
+  <EditText
+      android:id="@+id/editTextTextPersonName3"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:ems="10"
+      android:inputType="number"
+      android:text="Name"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.637"
+      app:layout_constraintStart_toEndOf="@+id/port"
+      tools:layout_editor_absoluteY="180dp" />
+
+  <Button
+      android:id="@+id/startButton"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="Έναρξη"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>
