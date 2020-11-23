@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">RoAmeR</string>
+    <string name="client_name">Το όνομα σας :</string>
+    <string name="hostName">Host Name :</string>
+    <string name="Port">Port :</string>
+    <string name="buttonStart">Έναρξη</string>
 </resources>
