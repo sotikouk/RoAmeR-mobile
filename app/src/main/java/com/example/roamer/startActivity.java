@@ -6,7 +6,6 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.view.View;
@@ -15,7 +14,7 @@ import android.widget.EditText;
 
 import com.example.roamer.agents.clientAgent;
 
-import java.util.Properties;
+import java.util.logging.Level;
 
 import jade.android.AndroidHelper;
 import jade.android.MicroRuntimeService;
@@ -23,25 +22,29 @@ import jade.android.MicroRuntimeServiceBinder;
 import jade.android.RuntimeCallback;
 import jade.core.MicroRuntime;
 import jade.core.Profile;
+import jade.imtp.leap.JICP.JICPProtocol;
+import jade.util.Logger;
+import jade.util.leap.Properties;
 import jade.wrapper.AgentController;
 import jade.wrapper.ControllerException;
 
-public class startActivity extends Activity {
+//import jade.android.AndroidHelper;
+//import jade.android.MicroRuntimeServiceBinder;
+//import jade.android.RuntimeCallback;
 
+public class startActivity extends Activity {
+    private Logger logger = Logger.getJADELogger(this.getClass().getName());
     private MicroRuntimeServiceBinder microRuntimeServiceBinder;
     private ServiceConnection serviceConnection;
 
-    private String clientName;
-    EditText hostField;
-    EditText portField;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
 
-        Button button = (Button) findViewById((R.id.startButton));
-
+        Button button = findViewById((R.id.startButton));
+        button.setOnClickListener(buttonARListener);
     }
 
     @Override
@@ -50,36 +53,42 @@ public class startActivity extends Activity {
     }
 
     private static boolean checkName(String clientName) {
-        if (clientName == null || clientName.trim().equals("")){
-            return false;
-        }
-        return true;
+        return clientName != null && !clientName.trim().equals("");
     }
 
-    private View.OnClickListener buttonARListener = new View.OnClickListener() {
-        @SuppressLint("WrongViewCast")
-        @Override
+    private final View.OnClickListener buttonARListener = new View.OnClickListener() {
+
         public void onClick(View v) {
-            final EditText nameField = (EditText) findViewById(R.id.PersonName);
-            clientName = nameField.getText().toString();
+            final EditText nameField = findViewById(R.id.PersonName);
+            String clientName = nameField.getText().toString();
             if (!checkName(clientName)) {
-                SharedPreferences settings = getSharedPreferences("jadeRoamerPrefs", 0);
-                String host = settings.getString("defaultHost", "");
-                String port = settings.getString("defaultPort", "");
-                hostField = (EditText) findViewById(R.id.editHost);
-                hostField.setText(host);
-                portField = (EditText) findViewById(R.id.editPort);
-                portField.setText(port);
-                SharedPreferences.Editor editor = settings.edit();
-                editor.putString("defaultHost", hostField.getText().toString());
-                editor.putString("defaultPort", portField.getText().toString());
-                startAR(clientName, host, port, agentStartupCallback);
+                try {
+                    @SuppressLint("WrongViewCast") EditText hostField = findViewById(R.id.editHost);
+                    String host = hostField.getText().toString();
+                    EditText portField = findViewById(R.id.editPort);
+                    String port = portField.getText().toString();
+                    //CREATE AND THE JADE PROPERTIES CLASS
+                    Properties props = new Properties();
+                    props.setProperty(Profile.MAIN_HOST, host);
+                    props.setProperty(Profile.MAIN_PORT, port);
+                    props.setProperty(JICPProtocol.MSISDN_KEY, "android");
+
+                    startAR(clientName, host, port, agentStartupCallback);
+
+                    finish();
+                } catch (Exception ex) {
+                    logger.log(Level.SEVERE, "Unexpected exception creating chat agent!");
+                }
+
             }
         }
     };
-    private RuntimeCallback<AgentController> agentStartupCallback = new RuntimeCallback<AgentController>() {
+
+
+    private final RuntimeCallback<AgentController> agentStartupCallback = new RuntimeCallback<AgentController>() {
             @Override
             public void onSuccess(AgentController agent) {
+
             }
 
             @Override
@@ -100,38 +109,44 @@ public class startActivity extends Activity {
 
         if (microRuntimeServiceBinder == null) {
             serviceConnection = new ServiceConnection() {
+                @Override
                 public void onServiceConnected(ComponentName className,
                                                IBinder service) {
                     microRuntimeServiceBinder = (MicroRuntimeServiceBinder) service;
-
-                    startContainer(clientName, (jade.util.leap.Properties) profile, agentStartupCallback);
-                };
+                    logger.log(Level.INFO, "Gateway successfully bound to MicroRuntimeService");
+                    startContainer(clientName, profile, agentStartupCallback);
+                }
 
                 public void onServiceDisconnected(ComponentName className) {
                     microRuntimeServiceBinder = null;
+                    logger.log(Level.INFO, "Gateway unbound from MicroRuntimeService");
                 }
             };
+            logger.log(Level.INFO, "Binding Gateway to MicroRuntimeService...");
             bindService(new Intent(getApplicationContext(),
                             MicroRuntimeService.class), serviceConnection,
                     Context.BIND_AUTO_CREATE);
         } else {
-            startContainer(clientName, (jade.util.leap.Properties) profile, agentStartupCallback);
+            logger.log(Level.INFO, "MicroRuntimeGateway already binded to service");
+            startContainer(clientName, profile, agentStartupCallback);
         }
 
     }
 
-    private void startContainer(final String clientName, jade.util.leap.Properties profile,
+    private void startContainer(final String clientName, Properties profile,
                                 final RuntimeCallback<AgentController> agentStartupCallback) {
         if (!MicroRuntime.isRunning()) {
             microRuntimeServiceBinder.startAgentContainer(profile,
                     new RuntimeCallback<Void>() {
                         @Override
                         public void onSuccess(Void thisIsNull) {
+                            logger.log(Level.INFO, "Successfully start of the container...");
                             startAgent(clientName, agentStartupCallback);
                         }
 
                         @Override
                         public void onFailure(Throwable throwable) {
+                            logger.log(Level.SEVERE, "Failed to start the container...");
                         }
                     });
         } else {
@@ -139,15 +154,16 @@ public class startActivity extends Activity {
         }
     }
 
-    private void startAgent(final String nickname,
+    private void startAgent(final String clientName,
                             final RuntimeCallback<AgentController> agentStartupCallback) {
-        microRuntimeServiceBinder.startAgent(nickname,
+        microRuntimeServiceBinder.startAgent(clientName,
                 clientAgent.class.getName(),
                 new Object[] { getApplicationContext() },
                 new RuntimeCallback<Void>() {
                     @Override
                     public void onSuccess(Void thisIsNull) {
-
+                        logger.log(Level.INFO, "Successfully start of the "
+                                + clientAgent.class.getName() + "...");
                         try {
                             agentStartupCallback.onSuccess(MicroRuntime
                                     .getAgent(clientName));
@@ -159,9 +175,13 @@ public class startActivity extends Activity {
 
                     @Override
                     public void onFailure(Throwable throwable) {
+                        logger.log(Level.SEVERE, "Failed to start the "
+                                + clientAgent.class.getName() + "...");
                         agentStartupCallback.onFailure(throwable);
                     }
                 });
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 
 }

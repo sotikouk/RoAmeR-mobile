@@ -23,7 +23,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
-import jade.android.MicroRuntimeServiceBinder;
+//import jade.android.MicroRuntimeServiceBinder;
 
 import static android.hardware.SensorManager.AXIS_MINUS_X;
 import static android.hardware.SensorManager.AXIS_MINUS_Y;
@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     boolean locationServiceAvailable;
     private float declination;
 
-    private MicroRuntimeServiceBinder microRuntimeServiceBinder;
+   // private MicroRuntimeServiceBinder microRuntimeServiceBinder;
 
     public MainActivity() {
     }

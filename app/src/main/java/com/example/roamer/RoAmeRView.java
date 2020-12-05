@@ -23,8 +23,10 @@ public class RoAmeRView extends View {
         this.context=context;
 
         arPoints = new ArrayList<ARPoint>() {{
-            add(new ARPoint("Κεντρική Πλατεία Καρδίτσας", 39.3649453, 21.9237381, 0));
-            add(new ARPoint("Πλατεία Πλαστήρα", 39.3639828, 21.9272391, 0));
+            add(new ARPoint("Ηλεκτρονικά Είδη Τεχνολογίας", 39.364851, 21.923120, 110));
+            add(new ARPoint("Πλατεία Πλαστήρα", 39.3639828, 21.9272391, 110));
+            add(new ARPoint("Παιδικά Ενδύματα", 39.364463, 21.923920, 110));
+            add(new ARPoint("Πλατείσ Ελευθερίας", 39.364790, 21.923756, 110));
         }};
     }
 
