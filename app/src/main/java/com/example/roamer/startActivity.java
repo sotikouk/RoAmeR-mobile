@@ -68,12 +68,11 @@ public class startActivity extends Activity {
                     */
             // Στην περίπτωση της εφαρμογής μας το hostName ειναι 162.168.1.5
             // Και το port 1099
-                    String host = "162.168.1.5";
+                    String host = "192.168.1.5";
                     String port = "1099";
                     try {
                     startAR(clientName, host, port, agentStartupCallback);
 
-                    finish();
                 } catch (Exception ex) {
                     logger.log(Level.SEVERE, "Unexpected exception creating chat agent!");
                 }
