@@ -52,27 +52,25 @@ public class startActivity extends Activity {
         super.onDestroy();
     }
 
-    private static boolean checkName(String clientName) {
-        return clientName != null && !clientName.trim().equals("");
-    }
+
 
     private final View.OnClickListener buttonARListener = new View.OnClickListener() {
 
         public void onClick(View v) {
             final EditText nameField = findViewById(R.id.PersonName);
             String clientName = nameField.getText().toString();
-            if (!checkName(clientName)) {
-                try {
+                    /*
                     @SuppressLint("WrongViewCast") EditText hostField = findViewById(R.id.editHost);
                     String host = hostField.getText().toString();
                     EditText portField = findViewById(R.id.editPort);
                     String port = portField.getText().toString();
-                    //CREATE AND THE JADE PROPERTIES CLASS
-                    Properties props = new Properties();
-                    props.setProperty(Profile.MAIN_HOST, host);
-                    props.setProperty(Profile.MAIN_PORT, port);
-                    props.setProperty(JICPProtocol.MSISDN_KEY, "android");
 
+                    */
+            // Στην περίπτωση της εφαρμογής μας το hostName ειναι 162.168.1.5
+            // Και το port 1099
+                    String host = "162.168.1.5";
+                    String port = "1099";
+                    try {
                     startAR(clientName, host, port, agentStartupCallback);
 
                     finish();
@@ -80,7 +78,7 @@ public class startActivity extends Activity {
                     logger.log(Level.SEVERE, "Unexpected exception creating chat agent!");
                 }
 
-            }
+
         }
     };
 
