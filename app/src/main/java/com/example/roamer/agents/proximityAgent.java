@@ -7,7 +7,7 @@ import jade.core.behaviours.CyclicBehaviour;
 // τον ενδιαφέρει. Κάνει ειδοποιήσεις και στην περίπτωση που υπάρχει προσφορά
 // σε κάποιο προιόν.
 
-public class notificationAgent extends Agent {
+public class proximityAgent extends Agent {
     protected void setup() {
 
         addBehaviour(new dist2poiNotify(this));

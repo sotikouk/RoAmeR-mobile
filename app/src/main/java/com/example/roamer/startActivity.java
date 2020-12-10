@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.roamer.agents.clientAgent;
+import com.example.roamer.agents.proximityAgent;
 
 import java.util.logging.Level;
 
@@ -70,6 +71,7 @@ public class startActivity extends Activity {
             // Και το port 1099
                     String host = "192.168.1.5";
                     String port = "1099";
+
                     try {
                     startAR(clientName, host, port, agentStartupCallback);
 
@@ -174,6 +176,33 @@ public class startActivity extends Activity {
                     public void onFailure(Throwable throwable) {
                         logger.log(Level.SEVERE, "Failed to start the "
                                 + clientAgent.class.getName() + "...");
+                        agentStartupCallback.onFailure(throwable);
+                    }
+                });
+        final String proximityName;
+        proximityName = clientName+"proximity";
+
+        microRuntimeServiceBinder.startAgent(proximityName,
+                proximityAgent.class.getName(),
+                new Object[] { getApplicationContext() },
+                new RuntimeCallback<Void>() {
+                    @Override
+                    public void onSuccess(Void thisIsNull) {
+                        logger.log(Level.INFO, "Successfully start of the "
+                                + proximityAgent.class.getName() + "...");
+                        try {
+                            agentStartupCallback.onSuccess(MicroRuntime
+                                    .getAgent(proximityName));
+                        } catch (ControllerException e) {
+                            // Should never happen
+                            agentStartupCallback.onFailure(e);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Throwable throwable) {
+                        logger.log(Level.SEVERE, "Failed to start the "
+                                + proximityAgent.class.getName() + "...");
                         agentStartupCallback.onFailure(throwable);
                     }
                 });
