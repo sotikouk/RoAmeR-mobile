@@ -1,33 +1,55 @@
 package com.example.roamer;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.location.Location;
 import android.opengl.Matrix;
+import android.os.Bundle;
 import android.view.View;
+
+import com.example.roamer.agents.arClientInterface;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import jade.core.MicroRuntime;
+import jade.wrapper.ControllerException;
+import jade.wrapper.StaleProxyException;
 
 public class RoAmeRView extends View {
     Context context;
     private Location currentLocation;
     private float[] rotatedProjectionMatrix = new float[16];
-    private List<ARPoint> arPoints;
+    protected static List<ARPoint> arPoints;
 
-    public RoAmeRView (Context context) {
+    arClientInterface arclientinterface;
+    String aName;
+
+    public RoAmeRView (Context context, String Name) {
         super(context);
         this.context=context;
+        this.aName = Name;
+        try {
+            arclientinterface = MicroRuntime.getAgent(aName).getO2AInterface(arClientInterface.class);
+        } catch (StaleProxyException e) {
+            e.printStackTrace();
+        } catch (ControllerException e) {
+            e.printStackTrace();
+        }
 
-        arPoints = new ArrayList<ARPoint>() {{
-            add(new ARPoint("Ηλεκτρονικά Είδη Τεχνολογίας", 39.364851, 21.923120, 110));
-            add(new ARPoint("Πλατεία Πλαστήρα", 39.3639828, 21.9272391, 110));
-            add(new ARPoint("Παιδικά Ενδύματα", 39.364463, 21.923920, 110));
-            add(new ARPoint("Πλατείσ Ελευθερίας", 39.364790, 21.923756, 110));
-        }};
+        arPoints = new ArrayList<ARPoint>()  {{
+                    add(arclientinterface.BusinessPoints());
+                    //add(new ARPoint("Ηλεκτρονικά Είδη Τεχνολογίας", 39.364851, 21.923120, 110));
+                //     add(new ARPoint("Πλατεία Πλαστήρα", 39.3639828, 21.9272391, 110));
+                //     add(new ARPoint("Παιδικά Ενδύματα", 39.364463, 21.923920, 110));
+                //     add(new ARPoint("Πλατείσ Ελευθερίας", 39.364790, 21.923756, 110));
+            }};
+        // todo εισαγωγή των σημειων που λαμβάνει ο πράκτορας στην ArrayList του RoAmeRView για την εμφάνιση τους
+       //arPoints.add(arclientinterface.BusinessPoints());
     }
 
     public double compDistance(Location currentLocation, ARPoint point){
@@ -104,4 +126,5 @@ public class RoAmeRView extends View {
 
         return Math.sqrt(distance);
     }
+
 }

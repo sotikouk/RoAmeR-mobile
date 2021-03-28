@@ -1,6 +1,8 @@
 package com.example.roamer;
 
 import android.Manifest;
+import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.hardware.Camera;
 import android.hardware.Sensor;
@@ -24,6 +26,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 //import jade.android.MicroRuntimeServiceBinder;
+
+import com.example.roamer.agents.arClientInterface;
+
+import jade.core.MicroRuntime;
+import jade.wrapper.ControllerException;
+import jade.wrapper.StaleProxyException;
 
 import static android.hardware.SensorManager.AXIS_MINUS_X;
 import static android.hardware.SensorManager.AXIS_MINUS_Y;
@@ -62,8 +70,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     boolean isNetworkEnabled;
     boolean locationServiceAvailable;
     private float declination;
-
-   // private MicroRuntimeServiceBinder microRuntimeServiceBinder;
+    String agentName;
 
     public MainActivity() {
     }
@@ -73,6 +80,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Intent intent = getIntent();
+            agentName = intent.getStringExtra("Name");
 
 
         sensorManager = (SensorManager) this.getSystemService(SENSOR_SERVICE);
@@ -80,7 +89,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         surfaceView = findViewById(R.id.surface_view);
         tvCurrentLocation = findViewById(R.id.tv_current_location);
         tvBearing = findViewById(R.id.tv_bearing);
-        roamerView = new RoAmeRView(this);
+        roamerView = new RoAmeRView(this, agentName);
     }
 
     @Override

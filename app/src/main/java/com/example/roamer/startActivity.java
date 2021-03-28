@@ -11,7 +11,6 @@ import android.os.IBinder;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-
 import com.example.roamer.agents.clientAgent;
 import com.example.roamer.agents.proximityAgent;
 
@@ -23,21 +22,17 @@ import jade.android.MicroRuntimeServiceBinder;
 import jade.android.RuntimeCallback;
 import jade.core.MicroRuntime;
 import jade.core.Profile;
-import jade.imtp.leap.JICP.JICPProtocol;
 import jade.util.Logger;
 import jade.util.leap.Properties;
 import jade.wrapper.AgentController;
 import jade.wrapper.ControllerException;
 
-//import jade.android.AndroidHelper;
-//import jade.android.MicroRuntimeServiceBinder;
-//import jade.android.RuntimeCallback;
 
 public class startActivity extends Activity {
     private Logger logger = Logger.getJADELogger(this.getClass().getName());
     private MicroRuntimeServiceBinder microRuntimeServiceBinder;
     private ServiceConnection serviceConnection;
-
+    String clientName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +41,7 @@ public class startActivity extends Activity {
 
         Button button = findViewById((R.id.startButton));
         button.setOnClickListener(buttonARListener);
+
     }
 
     @Override
@@ -59,14 +55,7 @@ public class startActivity extends Activity {
 
         public void onClick(View v) {
             final EditText nameField = findViewById(R.id.PersonName);
-            String clientName = nameField.getText().toString();
-                    /*
-                    @SuppressLint("WrongViewCast") EditText hostField = findViewById(R.id.editHost);
-                    String host = hostField.getText().toString();
-                    EditText portField = findViewById(R.id.editPort);
-                    String port = portField.getText().toString();
-
-                    */
+            clientName = nameField.getText().toString();
             // Στην περίπτωση της εφαρμογής μας το hostName ειναι 162.168.1.5
             // Και το port 1099
                     String host = "192.168.1.5";
@@ -180,7 +169,7 @@ public class startActivity extends Activity {
                     }
                 });
         final String proximityName;
-        proximityName = clientName+"proximity";
+        proximityName = clientName+"prx";
 
         microRuntimeServiceBinder.startAgent(proximityName,
                 proximityAgent.class.getName(),
@@ -207,6 +196,7 @@ public class startActivity extends Activity {
                     }
                 });
         Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra("Name", proximityName);
         startActivity(intent);
     }
 
