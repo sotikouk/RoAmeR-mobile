@@ -60,7 +60,6 @@ public class proximityAgent extends Agent {
             MessageTemplate mt = MessageTemplate.MatchPerformative(ACLMessage.INFORM);
             ACLMessage msg = myAgent.receive(mt);
             if (msg != null) {
-                // ACCEPT_PROPOSAL Message received. Process it
                 String coordinates = msg.getContent();
                 String[] bcoordinates = coordinates.split(":");
                 double lat = Double.parseDouble(bcoordinates[0]);
@@ -68,7 +67,6 @@ public class proximityAgent extends Agent {
                 double alt = Double.parseDouble(bcoordinates[2]);
                 String bkind = bcoordinates[3];
                 logger.log(Level.INFO,"*************coordinates recieved "+" "+lat+" "+lon+" "+alt+" "+bkind+"****************");
-                //setPoints(bkind, lat, lon, alt);
                 ARPoint bPoint;
                 bPoint = new ARPoint(bkind, lat, lon, alt);
                 bPoints.add(bPoint);
