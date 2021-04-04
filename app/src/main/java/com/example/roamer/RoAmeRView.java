@@ -42,14 +42,15 @@ public class RoAmeRView extends View {
         }
 
         arPoints = new ArrayList<ARPoint>()  {{
-                    add(arclientinterface.BusinessPoints());
-                    //add(new ARPoint("Ηλεκτρονικά Είδη Τεχνολογίας", 39.364851, 21.923120, 110));
+                 //   add(arclientinterface.BusinessPoints());
+                 //   add(new ARPoint("Ηλεκτρονικά Είδη Τεχνολογίας", 39.364851, 21.923120, 110));
                 //     add(new ARPoint("Πλατεία Πλαστήρα", 39.3639828, 21.9272391, 110));
                 //     add(new ARPoint("Παιδικά Ενδύματα", 39.364463, 21.923920, 110));
                 //     add(new ARPoint("Πλατείσ Ελευθερίας", 39.364790, 21.923756, 110));
             }};
         // todo εισαγωγή των σημειων που λαμβάνει ο πράκτορας στην ArrayList του RoAmeRView για την εμφάνιση τους
-       //arPoints.add(arclientinterface.BusinessPoints());
+        if (arclientinterface.BusinessPoints() != null)
+        arPoints.add(arclientinterface.BusinessPoints());
     }
 
     public double compDistance(Location currentLocation, ARPoint point){

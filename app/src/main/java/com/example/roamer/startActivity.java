@@ -58,7 +58,7 @@ public class startActivity extends Activity {
             clientName = nameField.getText().toString();
             // Στην περίπτωση της εφαρμογής μας το hostName ειναι 162.168.1.5
             // Και το port 1099
-                    String host = "192.168.1.5";
+                    String host = "192.168.1.6";
                     String port = "1099";
 
                     try {
