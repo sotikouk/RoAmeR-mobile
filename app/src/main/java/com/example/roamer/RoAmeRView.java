@@ -42,7 +42,6 @@ public class RoAmeRView extends View {
         }
 
         arPoints = new ArrayList<ARPoint>()  {{
-                 //   add(arclientinterface.BusinessPoints());
                  //   add(new ARPoint("Ηλεκτρονικά Είδη Τεχνολογίας", 39.364851, 21.923120, 110));
                 //     add(new ARPoint("Πλατεία Πλαστήρα", 39.3639828, 21.9272391, 110));
                 //     add(new ARPoint("Παιδικά Ενδύματα", 39.364463, 21.923920, 110));
